@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Fareco: Fashion Recommendation</title>
+        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Crimson+Text&display=swap">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    </head>
+    <body>
+        <header> 
+            <h3 id="headtitle"> F A R E C O </h3>
+            <div class="search-container">
+                <input type="text" id="search-bar" placeholder="Search...">
+                <i class="fas fa-bell notification-icon"></i>
+                <a href="userpage.html">
+                    <div id="profile-circle"></div>
+                </a>
+                <span id="profile-label">Username</span>
+            </div>
+        </header>
+
+        <div class="circle-button">
+            <img src="1.png" alt="shirt" title="shirt" id="shirt"> 
+            <img src="2.png" alt="short" title="short" id="short">
+            <img src="3.png" alt="pants" title="pants" id="pants">
+            <img src="4.png" alt="skirt" title="skirt" id="skirt">
+            <img src="5.png" alt="dress" title="dress" id="dress">
+        </div>
+    
+        <div class="menus">
+            <img src="plus.png" alt="plus" title="add post" id="plus" onclick="togglePostingPanel()">
+            <img src="match.png" alt="match" title="matchmake clothes" id="match" onclick="toggleMatchPanel()">
+        </div>
+    
+    <!-- Pop-up panel for posting -->
+    <div class="popup-post" id="postingPanel">
+        <div class="popup-content">
+            <!-- Content of the pop-up panel -->
+            <header>
+                <h1>Create a New Post</h1>
+            </header>
+            <main>
+                <form id="postForm">
+                    <label for="title">Title:</label>
+                    <input type="text" id="title" name="title" required><br><br>
+    
+                    <label for="content">Content:</label><br>
+                    <textarea id="content" name="content" rows="4" cols="50" required></textarea><br><br>
+    
+                    <label for="image">Image:</label>
+                    <input type="file" id="image" name="image" accept="image/*"><br><br>
+    
+                    <div id="imageContainer"></div><br>
+    
+                    <label>Tags:</label><br>
+                    <input type="checkbox" id="tag-shirt" name="tag" value="shirt">
+                    <label for="tag-shirt">Shirt</label><br>
+                    <input type="checkbox" id="tag-skirt" name="tag" value="skirt">
+                    <label for="tag-skirt">Skirt</label><br>
+                    <input type="checkbox" id="tag-pants" name="tag" value="pants">
+                    <label for="tag-pants">Pants</label><br>
+                    <input type="checkbox" id="tag-short" name="tag" value="short">
+                    <label for="tag-short">Short</label><br>
+                    <input type="checkbox" id="tag-dress" name="tag" value="dress">
+                    <label for="tag-dress">Dress</label><br><br>
+    
+                    <button type="submit">Post</button>
+                </form>
+            </main>
+        </div>
+    </div>
+    
+    
+        <!-- Pop-up panel for matching -->
+        <div class="popup-match" id="matchPanel">
+            <div class="popup-content">
+                <!-- Content of the pop-up panel -->
+                
+                <header>
+                    <h1>Match Clothes</h1>
+                </header>
+                <main>
+                   <!-- match make clothes dito-->
+                </main>
+            </div>
+        </div>
+    
+        <!-- Newsfeed section -->
+        <section id="newsfeed" class="scrollable"></section>
+    
+        <script>
+            function togglePostingPanel() {
+                var panel = document.getElementById("postingPanel");
+                panel.classList.toggle("active");
+            }
+    
+            function toggleMatchPanel() {
+                var panel = document.getElementById("matchPanel");
+                panel.classList.toggle("active");
+            }
+    
+            function submitPost(event) {
+        event.preventDefault(); 
+        // Get form values
+        var title = document.getElementById("title").value;
+        var content = document.getElementById("content").value;
+        var image = document.getElementById("image").files[0]; 
+    
+        // Create FileReader object
+        var reader = new FileReader();
+    
+        reader.onload = function(event) {
+            var imageUrl = event.target.result;
+    
+            var postElement = document.createElement("div");
+            postElement.classList.add("post");
+    
+            postElement.innerHTML = `
+                <h2>${title}</h2>
+                <p>${content}</p>
+                <img src="${imageUrl}" alt="Post Image" class="posted-image"> <!-- Add posted-image class -->
+                <button class="like-button">Like</button> <!-- Add like button -->
+                <span class="likes">0</span> <!-- Display like count -->
+            `;
+    
+            var newsfeed = document.getElementById("newsfeed");
+            newsfeed.appendChild(postElement);
+    
+            document.getElementById("postForm").reset();
+    
+            togglePostingPanel();
+        };
+    
+        reader.readAsDataURL(image);
+    
+    }
+    
+            document.getElementById("postForm").addEventListener("submit", submitPost);
+    
+            document.getElementById('image').addEventListener('change', function(event) {
+                const file = event.target.files[0];
+                const reader = new FileReader();
+    
+                reader.onload = function(e) {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.width = 200; 
+                    document.getElementById('imageContainer').innerHTML = '';
+                    document.getElementById('imageContainer').appendChild(img);
+                }
+    
+                reader.readAsDataURL(file);
+            });
+    
+    document.querySelectorAll('.like-button').forEach(button => {
+        button.addEventListener('click', function() {
+            var likesElement = this.nextElementSibling; 
+            var likes = parseInt(likesElement.textContent); 
+            likesElement.textContent = likes + 1;
+        });
+    });
+    
+        </script>
+    </body>
+</html>
