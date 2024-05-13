@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Fareco: Fashion Recommendation</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Crimson+Text&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <!-- THIS IS WHERE THE LOG IN INFORMATION STARTS-->
+    <div class="landing-page">
+        <h1 id="farecologin"> F A R E C O </h1>
+        <h6 id="desclogin"> "Unlock Your Style Potential with FA-RECO: Where Fashion Innovation Meets Personalized Wardrobe Curation. Effortlessly Transform Your Closet into a Styling Sanctuary, Empowering You to Discover, Create, and Share Unique Looks Tailored Just for You."</h6>
+        <img src="des1.png" alt="design log in" id="login-design">
+        <form id="login-form">
+            <input type="text" name="username" id="user-input" placeholder="Email" required>
+            <br>
+            <div class="password-container">
+                <input type="password" name="password" id="pass-input" placeholder="Password" required>
+               
+                </span>
+            </div>
+            <br>
+            <input type="submit" id="btn-login" value="Login">
+        </form>
+        <a href="signup.html" id="createacc">Create an Account</a>
+    </div>
+    <script src="script.js"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js";
+
+        const firebaseConfig = {
+          apiKey: "AIzaSyB2clVgt2QT21DItH8TtMjei9LPrtJx16o",
+          authDomain: "farecodatabase.firebaseapp.com",
+          databaseURL: "https://farecodatabase-default-rtdb.firebaseio.com",
+          projectId: "farecodatabase",
+          storageBucket: "farecodatabase.appspot.com",
+          messagingSenderId: "488588490432",
+          appId: "1:488588490432:web:26115e2f8fc877d2b9df25"
+        };
+
+        const app = initializeApp(firebaseConfig);
+
+        document.getElementById('login-form').addEventListener('submit', function(event) {
+            event.preventDefault(); 
+            const email = document.getElementById('user-input').value;
+            const password = document.getElementById('pass-input').value;
+
+            signInWithEmailAndPassword(getAuth(), email, password)
+                .then((userCredential) => {
+                    window.location.href = "home.html";
+                })
+                .catch((error) => {
+                    console.error(error.message);
+                    alert(error.message);
+                });
+        });
+    </script>
+</body>
+</html>
